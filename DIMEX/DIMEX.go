@@ -377,54 +377,54 @@ func (
 	}
 
 	// versao CORRETA
-	// if module.st == noMX ||
-	// 	(module.st == wantMX &&
-	// 		after(
-	// 			module.id,
-	// 			module.reqTs,
-	// 			senderID,
-	// 			senderTs,
-	// 		)) {
-
-	// 	module.sendToLink(
-	// 		module.addresses[senderID],
-
-	// 		fmt.Sprintf(
-	// 			"respOK||%d||%d",
-	// 			module.id,
-	// 			module.lcl,
-	// 		),
-
-	// 		"     ",
-	// 	)
-
-	// } else {
-
-	// 	module.waiting[senderID] =
-	// 		true
-	// }
-
-	// FALHA DE MUTEX
-	// o processo responde com respOK independente do estado atual
-	// quebra exclusão mútua
 	if module.st == noMX ||
-		module.st == wantMX ||
-		module.st == inMX {
+		(module.st == wantMX &&
+			after(
+				module.id,
+				module.reqTs,
+				senderID,
+				senderTs,
+			)) {
 
 		module.sendToLink(
 			module.addresses[senderID],
+
 			fmt.Sprintf(
 				"respOK||%d||%d",
 				module.id,
 				module.lcl,
 			),
+
 			"     ",
 		)
 
 	} else {
 
-		module.waiting[senderID] = true
+		module.waiting[senderID] =
+			true
 	}
+
+	// FALHA DE MUTEX
+	// o processo responde com respOK independente do estado atual
+	// quebra exclusão mútua
+	// if module.st == noMX ||
+	// 	module.st == wantMX ||
+	// 	module.st == inMX {
+
+	// 	module.sendToLink(
+	// 		module.addresses[senderID],
+	// 		fmt.Sprintf(
+	// 			"respOK||%d||%d",
+	// 			module.id,
+	// 			module.lcl,
+	// 		),
+	// 		"     ",
+	// 	)
+
+	// } else {
+
+	// 	module.waiting[senderID] = true
+	// }
 
 	module.lcl =
 		max(
