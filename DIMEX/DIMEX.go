@@ -316,23 +316,23 @@ func (
 	)
 
 	// versao CORRETA
-	// if module.nbrResps ==
-	// 	len(module.addresses)-1 {
+	if module.nbrResps ==
+		len(module.addresses)-1 {
 
-	// 	module.st = inMX
+		module.st = inMX
 
-	// 	module.Ind <- dmxResp{}
-	// }
+		module.Ind <- dmxResp{}
+	}
 
 	// FALHA BLOQUEIO
 	// espera N respostas, mas so existem N-1 outros processos
-	if module.nbrResps ==
-		len(module.addresses) {
+	// if module.nbrResps ==
+	// 	len(module.addresses) {
 	
-		module.st = inMX
+	// 	module.st = inMX
 	
-		module.Ind <- dmxResp{}
-	}
+	// 	module.Ind <- dmxResp{}
+	// }
 
 }
 
@@ -376,31 +376,54 @@ func (
 		return
 	}
 
+	// versao CORRETA
+	// if module.st == noMX ||
+	// 	(module.st == wantMX &&
+	// 		after(
+	// 			module.id,
+	// 			module.reqTs,
+	// 			senderID,
+	// 			senderTs,
+	// 		)) {
+
+	// 	module.sendToLink(
+	// 		module.addresses[senderID],
+
+	// 		fmt.Sprintf(
+	// 			"respOK||%d||%d",
+	// 			module.id,
+	// 			module.lcl,
+	// 		),
+
+	// 		"     ",
+	// 	)
+
+	// } else {
+
+	// 	module.waiting[senderID] =
+	// 		true
+	// }
+
+	// FALHA DE MUTEX
+	// o processo responde com respOK independente do estado atual
+	// quebra exclusão mútua
 	if module.st == noMX ||
-		(module.st == wantMX &&
-			after(
-				module.id,
-				module.reqTs,
-				senderID,
-				senderTs,
-			)) {
+		module.st == wantMX ||
+		module.st == inMX {
 
 		module.sendToLink(
 			module.addresses[senderID],
-
 			fmt.Sprintf(
 				"respOK||%d||%d",
 				module.id,
 				module.lcl,
 			),
-
 			"     ",
 		)
 
 	} else {
 
-		module.waiting[senderID] =
-			true
+		module.waiting[senderID] = true
 	}
 
 	module.lcl =
