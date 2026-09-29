@@ -315,13 +315,25 @@ func (
 		),
 	)
 
+	// versao CORRETA
+	// if module.nbrResps ==
+	// 	len(module.addresses)-1 {
+
+	// 	module.st = inMX
+
+	// 	module.Ind <- dmxResp{}
+	// }
+
+	// FALHA BLOQUEIO
+	// espera N respostas, mas so existem N-1 outros processos
 	if module.nbrResps ==
-		len(module.addresses)-1 {
-
+		len(module.addresses) {
+	
 		module.st = inMX
-
+	
 		module.Ind <- dmxResp{}
 	}
+
 }
 
 func (
