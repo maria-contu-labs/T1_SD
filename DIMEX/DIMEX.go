@@ -430,7 +430,7 @@ func (
 		max(
 			module.lcl,
 			senderTs,
-		)
+		) + 1
 }
 
 // inicia um snapshot local
