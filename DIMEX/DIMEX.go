@@ -407,10 +407,6 @@ func (
 	// FALHA DE MUTEX
 	// o processo responde com respOK independente do estado atual
 	// quebra exclusão mútua
-	// if module.st == noMX ||
-	// 	module.st == wantMX ||
-	// 	module.st == inMX {
-
 	// 	module.sendToLink(
 	// 		module.addresses[senderID],
 	// 		fmt.Sprintf(
@@ -420,11 +416,6 @@ func (
 	// 		),
 	// 		"     ",
 	// 	)
-
-	// } else {
-
-	// 	module.waiting[senderID] = true
-	// }
 
 	module.lcl =
 		max(
